@@ -1,6 +1,12 @@
 {
   "version": 1,
   "skills": {
+    "Shadcn UI & Blocks": {
+      "source": "masonjames/shadcnblocks-skill",
+      "sourceType": "github",
+      "skillPath": "skills/shadcn-ui/SKILL.md",
+      "computedHash": "ed8406a28d8dd2b80ca419fd4123cf3af8273dcfb8d42aca757591af7d55851e"
+    },
     "next-best-practices": {
       "source": "vercel-labs/next-skills",
       "sourceType": "github",
