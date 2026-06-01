@@ -1,10 +1,27 @@
 import { TooltipProvider } from "@/components/ui/tooltip";
-import { Sidebar1 } from "@/components/sidebar1";
+import { Sidebar16 } from "@/components/sidebar16";
+import { getCurrentUser } from "@/lib/current-user";
+import { currentUser } from "@clerk/nextjs/server";
 
-export default function AppLayout({ children }: { children: React.ReactNode }) {
+export default async function AppLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
+  const { user } = await getCurrentUser();
+  const clerkUser = await currentUser();
+
   return (
     <TooltipProvider>
-      <Sidebar1>{children}</Sidebar1>
+      <Sidebar16
+        user={{
+          name: user.name || "",
+          email: user.email,
+          avatarUrl: clerkUser?.imageUrl,
+        }}
+      >
+        {children}
+      </Sidebar16>
     </TooltipProvider>
   );
 }

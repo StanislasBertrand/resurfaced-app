@@ -23,9 +23,11 @@ Read and apply all skills before writing any Next.js or React code.
 ## UI Approach
 
 - Use **shadcn/ui** for all UI components (buttons, cards, tables, charts, etc.)
-- Use **shadcn/ui Blocks** for pre-assembled page sections (sidebar, dashboard layouts, etc.)
-- Use the `shadcn-ui-blocks` skill to pick the correct block/component for each UI need
-- Components live in the codebase (not an npm dependency) — customize freely
+- Use **ShadcnBlocks Pro** for pre-assembled page sections — install with `npx shadcn add @shadcnblocks/<block-name>`
+- Use the `shadcn-ui-blocks` skill to pick the correct block/component for each UI need — it has the full catalog index
+- The ShadcnBlocks Pro registry is configured in `components.json` with API key from `SHADCNBLOCKS_API_KEY` in `.env.local`
+- Components and blocks live in the codebase (not an npm dependency) — customize freely
+- Always check the ShadcnBlocks catalog before building UI from scratch — there are 1300+ blocks across marketing, app, and ecommerce categories
 
 ## Database
 
