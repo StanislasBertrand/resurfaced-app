@@ -28,8 +28,6 @@ export async function fetchOpenAICosts(
     if (!res.ok) return totalCost;
 
     const data = await res.json();
-    console.log("OpenAI cost response:", JSON.stringify(data).slice(0, 500));
-
     for (const bucket of data.data ?? []) {
       for (const result of bucket.results ?? []) {
         totalCost += parseFloat(result.amount?.value ?? "0");
