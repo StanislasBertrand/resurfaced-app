@@ -27,6 +27,13 @@ Read and apply all skills before writing any Next.js or React code.
 - Use the `shadcn-ui-blocks` skill to pick the correct block/component for each UI need
 - Components live in the codebase (not an npm dependency) — customize freely
 
+## Database
+
+- **Never run `prisma migrate dev` or `prisma db push` without explicit approval** — always wait for the user to review the schema and ask for the migration to be applied
+- Prisma schema lives at `prisma/schema.prisma`
+- Neon Postgres via Vercel Marketplace
+- Prisma config loads env from `.env.local`
+
 ## Commands
 
 - `npm run dev` — start dev server
