@@ -31,7 +31,8 @@ export const getCurrentUser = cache(async () => {
     data: {
       clerkId,
       email: clerkUser?.emailAddresses[0]?.emailAddress ?? "",
-      name: clerkUser?.fullName,
+      firstName: clerkUser?.firstName,
+      lastName: clerkUser?.lastName,
       memberships: {
         create: {
           role: "owner",

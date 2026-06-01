@@ -13,21 +13,18 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { cn } from "@/lib/utils";
-import { saveAnthropicKey, removeAnthropicKey } from "./actions";
+import { saveOpenAIKey, removeOpenAIKey } from "./actions";
 
-interface AnthropicSettingsProps {
+interface OpenAISettingsProps {
   isConnected: boolean;
-  orgName?: string;
 }
 
-export function AnthropicSettings({
+export function OpenAISettings({
   isConnected: initialConnected,
-  orgName: initialOrgName,
-}: AnthropicSettingsProps) {
+}: OpenAISettingsProps) {
   const [open, setOpen] = useState(false);
   const [key, setKey] = useState("");
   const [isConnected, setIsConnected] = useState(initialConnected);
-  const [orgName, setOrgName] = useState(initialOrgName);
   const [saving, setSaving] = useState(false);
   const [removing, setRemoving] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -37,11 +34,10 @@ export function AnthropicSettings({
     setError(null);
     setSaving(true);
 
-    const result = await saveAnthropicKey(key.trim());
+    const result = await saveOpenAIKey(key.trim());
 
     if (result.success) {
       setIsConnected(true);
-      setOrgName(result.orgName);
       setKey("");
       setOpen(false);
     } else {
@@ -55,9 +51,8 @@ export function AnthropicSettings({
     setError(null);
     setRemoving(true);
 
-    await removeAnthropicKey();
+    await removeOpenAIKey();
     setIsConnected(false);
-    setOrgName(undefined);
 
     setRemoving(false);
     setOpen(false);
@@ -70,13 +65,13 @@ export function AnthropicSettings({
           <div className="flex items-center gap-4">
             <div className="flex size-14 shrink-0 items-center justify-center rounded-xl border bg-background">
               <img
-                src="/anthropic-logo.svg"
-                alt="Anthropic"
+                src="/openai-logo.svg"
+                alt="OpenAI"
                 className={cn("size-8 dark:invert")}
               />
             </div>
             <div className="flex-1">
-              <h3 className="font-semibold">Anthropic</h3>
+              <h3 className="font-semibold">OpenAI</h3>
             </div>
           </div>
         </div>
@@ -107,7 +102,7 @@ export function AnthropicSettings({
       <Dialog open={open} onOpenChange={setOpen}>
         <DialogContent className="sm:max-w-lg">
           <DialogHeader>
-            <DialogTitle>Connect Anthropic</DialogTitle>
+            <DialogTitle>Connect OpenAI</DialogTitle>
             <DialogDescription>
               Enter your Admin API key to start tracking usage and costs.
             </DialogDescription>
@@ -117,16 +112,15 @@ export function AnthropicSettings({
             <div className="rounded-md border border-blue-200 bg-blue-50 p-4 text-sm text-blue-900 dark:border-blue-900 dark:bg-blue-950 dark:text-blue-200">
               <p className="font-medium">Admin API key required</p>
               <p className="mt-1">
-                We need an <strong>Admin API key</strong> (starts with{" "}
-                <code>sk-ant-admin...</code>), not a regular API key. Create one
-                in the{" "}
+                We need an <strong>Admin API key</strong> from your organization
+                settings. Create one at{" "}
                 <a
-                  href="https://platform.claude.com/settings/keys"
+                  href="https://platform.openai.com/settings/organization/admin-keys"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="underline"
                 >
-                  Anthropic Console
+                  platform.openai.com
                 </a>
                 .
               </p>
@@ -138,11 +132,11 @@ export function AnthropicSettings({
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="anthropic-key">Admin API Key</Label>
+              <Label htmlFor="openai-key">Admin API Key</Label>
               <Input
-                id="anthropic-key"
+                id="openai-key"
                 type="password"
-                placeholder="sk-ant-admin-..."
+                placeholder="sk-admin-..."
                 value={key}
                 onChange={(e) => setKey(e.target.value)}
                 disabled={saving}

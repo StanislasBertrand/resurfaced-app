@@ -47,3 +47,48 @@ export async function removeAnthropicKey(): Promise<{ success: boolean }> {
 
   return { success: true };
 }
+
+export async function saveOpenAIKey(key: string): Promise<SaveKeyResult> {
+  const { workspace } = await getCurrentUser();
+
+  const now = Math.floor(Date.now() / 1000);
+  const oneDayAgo = now - 86400;
+
+  const res = await fetch(
+    `https://api.openai.com/v1/organization/costs?start_time=${oneDayAgo}&limit=1`,
+    {
+      headers: {
+        Authorization: `Bearer ${key}`,
+        "Content-Type": "application/json",
+      },
+    },
+  );
+
+  if (!res.ok) {
+    if (res.status === 401) {
+      return { success: false, error: "Invalid API key. Make sure you're using an Admin API key from your organization settings." };
+    }
+    if (res.status === 403) {
+      return { success: false, error: "This key doesn't have admin permissions. Create an Admin key at platform.openai.com/settings/organization/admin-keys." };
+    }
+    return { success: false, error: `OpenAI API returned ${res.status}. Please try again.` };
+  }
+
+  await prisma.openAISettings.upsert({
+    where: { workspaceId: workspace.id },
+    update: { adminApiKey: key },
+    create: { workspaceId: workspace.id, adminApiKey: key },
+  });
+
+  return { success: true, orgName: "OpenAI" };
+}
+
+export async function removeOpenAIKey(): Promise<{ success: boolean }> {
+  const { workspace } = await getCurrentUser();
+
+  await prisma.openAISettings.deleteMany({
+    where: { workspaceId: workspace.id },
+  });
+
+  return { success: true };
+}

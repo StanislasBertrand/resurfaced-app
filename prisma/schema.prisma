@@ -14,7 +14,8 @@ model User {
   id        String   @id @default(cuid())
   clerkId   String   @unique
   email     String   @unique
-  name      String?
+  firstName String?
+  lastName  String?
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
@@ -29,6 +30,7 @@ model Workspace {
 
   members           WorkspaceMember[]
   anthropicSettings AnthropicSettings?
+  openaiSettings    OpenAISettings?
 }
 
 model WorkspaceMember {
@@ -46,6 +48,16 @@ model WorkspaceMember {
 }
 
 model AnthropicSettings {
+  id          String   @id @default(cuid())
+  adminApiKey String
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  workspaceId String    @unique
+  workspace   Workspace @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+}
+
+model OpenAISettings {
   id          String   @id @default(cuid())
   adminApiKey String
   createdAt   DateTime @default(now())

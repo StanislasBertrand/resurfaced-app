@@ -1,13 +1,19 @@
 import { getCurrentUser } from "@/lib/current-user";
 import { prisma } from "@/lib/prisma";
 import { AnthropicSettings } from "./anthropic-settings";
+import { OpenAISettings } from "./openai-settings";
 
 export default async function SettingsPage() {
   const { workspace } = await getCurrentUser();
 
-  const anthropicSettings = await prisma.anthropicSettings.findUnique({
-    where: { workspaceId: workspace.id },
-  });
+  const [anthropicSettings, openaiSettings] = await Promise.all([
+    prisma.anthropicSettings.findUnique({
+      where: { workspaceId: workspace.id },
+    }),
+    prisma.openAISettings.findUnique({
+      where: { workspaceId: workspace.id },
+    }),
+  ]);
 
   // If connected, fetch the org name from Anthropic
   let orgName: string | undefined;
@@ -29,19 +35,23 @@ export default async function SettingsPage() {
   }
 
   return (
-    <div className="space-y-6">
-      <h1 className="text-2xl font-semibold tracking-tight">
-        Connect your AI providers
-      </h1>
+    <div>
+      <div className="space-y-1">
+        <h1 className="text-2xl font-semibold tracking-tight">
+          Connect your AI providers
+        </h1>
+        <p className="text-sm text-muted-foreground">
+          {[anthropicSettings, openaiSettings].filter(Boolean).length} of 2 integrations connected
+        </p>
+      </div>
 
-      <ul className="grid gap-4 sm:grid-cols-2 md:grid-cols-3">
-        <li>
-          <AnthropicSettings
-            isConnected={!!anthropicSettings}
-            orgName={orgName}
-          />
-        </li>
-      </ul>
+      <div className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+        <AnthropicSettings
+          isConnected={!!anthropicSettings}
+          orgName={orgName}
+        />
+        <OpenAISettings isConnected={!!openaiSettings} />
+      </div>
     </div>
   );
 }

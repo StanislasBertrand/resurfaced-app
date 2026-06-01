@@ -15,7 +15,7 @@ export default async function AppLayout({
     <TooltipProvider>
       <Sidebar16
         user={{
-          name: user.name || "",
+          name: [user.firstName, user.lastName].filter(Boolean).join(" "),
           email: user.email,
           avatarUrl: clerkUser?.imageUrl,
         }}

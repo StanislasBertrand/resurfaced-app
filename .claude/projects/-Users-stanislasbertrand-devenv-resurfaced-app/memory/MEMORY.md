@@ -1,0 +1,1 @@
+- [No auto-commit](feedback_no_auto_commit.md) — never commit/push unless user explicitly asks

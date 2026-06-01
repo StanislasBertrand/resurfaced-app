@@ -50,3 +50,4 @@ Read and apply all skills before writing any Next.js or React code.
 - API keys go in `process.env.SECRET_NAME` (server-only), never `NEXT_PUBLIC_`
 - Validate external input with Zod at system boundaries
 - Use `loading.tsx` and `error.tsx` for route-level loading/error states
+- When user actions trigger server re-fetches (e.g. changing a filter/dropdown), use `useTransition` so the UI updates immediately and affected values show skeleton placeholders while loading — never freeze the UI waiting for the server
